@@ -1,27 +1,46 @@
 """
-PDF Processor Script
+Thesis PDF Processor Script
 
-This script is designed to process PDF student thesis reports, extract relevant information, and generate entries suitable for an academic website built with Hugo Blox. It uses the Perplexity API to analyze the content of PDFs and create markdown files with summaries, titles, authors, and keywords.
+This script processes PDF student thesis reports and generates entries suitable for an academic website built with Hugo Blox.
+It uses the Perplexity API to analyze the content of PDFs and create markdown files with summaries, titles, authors, and keywords.
 
-Functionality:
-- Recursively finds all PDF files in a specified base folder.
-- Extracts text and metadata from each PDF.
-- Analyzes the content using the Perplexity API to generate a summary, title, author, and keywords.
-- Creates a structured markdown file for each PDF, which can be used to populate an academic website.
+The script can be run in two modes:
+1. Full Mode: Processes all PDF files in the specified folder
+2. Test Mode: Processes only one PDF file (useful for testing)
 
 Usage:
-    python pdf_processor.py --api-key YOUR_API_KEY --base-folder "/path/to/folder" [--test]
+    Full Mode:
+        python pdf_processor.py --api-key YOUR_API_KEY --base-folder "/path/to/folder"
+    
+    Test Mode:
+        python pdf_processor.py --api-key YOUR_API_KEY --base-folder "/path/to/folder" --test
 
 Arguments:
-    --api-key: Your Perplexity API key (required).
-    --base-folder: Path to the folder containing PDFs (required).
-    --test: Optional flag to process only one PDF for testing purposes.
+    --api-key: Your Perplexity API key (required)
+    --base-folder: Path to the folder containing PDFs (required)
+    --test: Optional flag to process only one PDF file for testing purposes
 
 Example:
+    # Process all PDFs
+    python pdf_processor.py --api-key "your_api_key" --base-folder "/home/user/thesis_reports"
+    
+    # Process only one PDF (test mode)
     python pdf_processor.py --api-key "your_api_key" --base-folder "/home/user/thesis_reports" --test
 
 Note:
-    Ensure that the Perplexity API key is valid and that the base folder contains PDF files to be processed.
+    - Ensure that the Perplexity API key is valid
+    - The base folder must contain PDF files to be processed
+    - The script creates an 'out' directory in the base folder to store processed files
+    - Each processed PDF gets its own subdirectory with the format: 2025_author_name
+    - The script generates an index.md file for each processed PDF
+
+Dependencies:
+    - PyPDF2: For PDF text and metadata extraction
+    - requests: For API communication
+    - pathlib: For path handling
+
+License:
+    This project is licensed under the Creative Commons Attribution 4.0 International License.
 """
 
 import os
@@ -350,6 +369,9 @@ caption = ""
         """
         Process all PDF files in the base folder and subfolders.
         If test is True, only process one PDF and stop.
+
+        Args:
+            test (bool): If True, only process one PDF file. Default is False.
         """
         pdf_files = self.find_pdf_files()
 
@@ -357,7 +379,11 @@ caption = ""
             print("No PDF files found in the specified folder.")
             return
 
-        print(f"Found {len(pdf_files)} PDF files to process.")
+        if test:
+            print("Running in TEST mode - will process only one PDF file.")
+            pdf_files = pdf_files[:1]
+        else:
+            print(f"Running in FULL mode - will process all {len(pdf_files)} PDF files.")
 
         successful = 0
         failed = 0
@@ -367,8 +393,6 @@ caption = ""
                 successful += 1
             else:
                 failed += 1
-            if test:
-                break
 
         print(f"\nProcessing complete!")
         print(f"Successfully processed: {successful}")
