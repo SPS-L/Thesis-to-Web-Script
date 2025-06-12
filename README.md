@@ -24,19 +24,33 @@ This script is designed to process PDF student thesis reports, extract relevant 
 
 ## Usage
 
+The script can be run in two modes:
+
+### Full Mode
+Processes all PDF files in the specified folder:
 ```bash
-python pdf_processor.py --api-key YOUR_API_KEY --base-folder "/path/to/folder" [--test]
+python pdf_processor.py --api-key YOUR_API_KEY --base-folder "/path/to/folder"
+```
+
+### Test Mode
+Processes only one PDF file (useful for testing):
+```bash
+python pdf_processor.py --api-key YOUR_API_KEY --base-folder "/path/to/folder" --test
 ```
 
 ### Arguments
 
 - `--api-key`: Your Perplexity API key (required).
 - `--base-folder`: Path to the folder containing PDFs (required).
-- `--test`: Optional flag to process only one PDF for testing purposes.
+- `--test`: Optional flag to process only one PDF file for testing purposes.
 
 ### Example
 
 ```bash
+# Process all PDFs
+python pdf_processor.py --api-key "your_api_key" --base-folder "/home/user/thesis_reports"
+
+# Process only one PDF (test mode)
 python pdf_processor.py --api-key "your_api_key" --base-folder "/home/user/thesis_reports" --test
 ```
 
