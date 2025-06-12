@@ -6,8 +6,8 @@ This script is designed to process PDF student thesis reports, extract relevant 
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
-   cd <repository-directory>
+   git clone https://github.com/SPS-L/Thesis-to-Web-Script.git
+   cd Thesis-to-Web-Script
    ```
 
 2. Install the required Python packages:
