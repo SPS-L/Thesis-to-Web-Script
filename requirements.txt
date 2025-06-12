@@ -1,0 +1,3 @@
+PyPDF2
+requests
+pathlib>=1.0.1
